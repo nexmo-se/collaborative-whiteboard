@@ -48,26 +48,25 @@ function Main() {
 
   return (
     <div className="main">
-      <div className="participantsContainer">
-        <div className="video" ref={videoContainer} id="video-container"></div>
-        {/* <Chat messages={messages} sendChatMessage={sendChatMessage} /> */}
-        {/* <OTWhiteBoard /> */}
-        <div className="video ">
-          <iframe
-            width="100%"
-            height="100%"
-            src="https://www.youtube.com/embed/VTnDYxwhSaI?autoplay=1&vq=hd720"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        </div>
-        <Chat messages={messages} sendChatMessage={sendChatMessage} />
+      {/* <div className="participantsContainer"> */}
+      <div className="video" ref={videoContainer} id="video-container"></div>
+      {/* <Chat messages={messages} sendChatMessage={sendChatMessage} /> */}
+      {/* <OTWhiteBoard /> */}
+      <div className="video ">
+        <iframe
+          width="100%"
+          height="100%"
+          src="https://www.youtube.com/embed/VTnDYxwhSaI?autoplay=1&vq=hd720"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
-      {/* className={classes.streams}
-        ref={videoContainer} */}
+      <Chat messages={messages} sendChatMessage={sendChatMessage} />
     </div>
+
+    // </div>
   );
 }
 
