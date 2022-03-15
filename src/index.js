@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import '@vonagevolta/volta2/dist/css/volta.min.css';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(

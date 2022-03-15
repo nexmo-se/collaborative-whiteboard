@@ -38,22 +38,50 @@ body {
   overflow: hidden;
 }
 .video {
-  width: 100%;
-  /* margin-top: 20vh; */
-  height: 100%;
   display: flex;
+  overflow: hidden;
+  position: relative;
+  flex-basis: 20%;
   flex-direction: column;
 }
-
+.cameraContainer {
+  flex-basis: 100%;
+  z-index: 0;
+}
+.K8tY_4rQtyF2TATtwygC {
+  display: none;
+}
+.screenContainer {
+  position: 'absolute';
+  top: 0;
+  bottom: 0;
+  display: 'flex';
+  width: 200;
+  flex-direction: 'column';
+  z-index: 5;
+  /* & > *': {
+        width: '128px !important',
+        height: '128px !important',
+        borderRadius: '50%',
+        margin: '15px 0',
+        border: '4px solid #d6219c'
+      } */
+}
 .header {
   /* height: 10vh; */
   background-color: green;
 }
 .main {
+  height: 100%;
   display: flex;
-  flex: 1 1;
+  flex-direction: column;
+}
+.flexbox {
+  flex: 1;
+  width: 100%;
+  display: flex;
   overflow: hidden;
-  padding: 8px;
+  flex-direction: row;
 }
 
 .other {
@@ -93,9 +121,79 @@ body {
 .middle > div {
   margin-right: 16px;
 }
+.sidenav {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  flex-basis: 10%;
+  border-bottom: 1px solid #e7ebee;
+  background-color: white;
+}
+.button {
+  border-radius: '5em';
+  background-color: '#32353A';
+  color: '#fff';
+  width: 30px;
+  position: absolute;
+  margin-left: 100px;
+}
+
+.buttonLeft {
+  border-radius: '5em';
+  background-color: '#32353A';
+  color: '#fff';
+  width: 30px;
+  position: absolute;
+  /* z-index: 100; */
+  right: 95vh;
+}
+
+.fullwidth {
+  flex-basis: 100%;
+}
+.hidden {
+  width: 0px;
+  height: 0px;
+  visibility: hidden;
+}
+.showbutton {
+  position: absolute;
+  left: 95vw;
+  z-index: 5;
+}
+.chatOpened {
+  flex-basis: 75%;
+}
+.hidebutton {
+  padding: 10px;
+  width: 100px;
+  position: absolute;
+  margin-right: 50px;
+  z-index: 100;
+}
+.participants {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  overflow-y: scroll;
+  padding-top: 16px;
+  flex-direction: column;
+  padding-bottom: 16px;
+}
+
+.list {
+  background-color: white;
+  flex: 3;
+  display: flex;
+  padding: 16px;
+  overflow-y: scroll;
+  flex-direction: column;
+}
 
 .right {
   flex: 1;
   display: flex;
-  justify-content: flex-end;
+  border-left: 1px solid #e7ebee;
+  flex-direction: column;
+  z-index: 100;
 }

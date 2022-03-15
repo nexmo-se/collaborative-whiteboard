@@ -1,14 +1,23 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react';
-// import OT from '@opentok/client';
+import OT from '@opentok/client';
+import LM from 'opentok-layout-js';
 // import OT from '../../public/lib/dev'
-const OT = window.OT;
+// const OT = window.OT;
+
 export function usePublisher() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [pubInitialised, setPubInitialised] = useState(false);
   const publisherRef = useRef();
 
+  // layout.layout();
+
   const streamCreatedListener = React.useCallback(({ stream }) => {
     console.log(stream);
+    if (stream.publisher && stream.videoType === 'screen') {
+      const element = document.getElementById(stream.publisher.id);
+      element.classList.add('OT_big');
+    }
+
     setIsPublishing(true);
   }, []);
 
@@ -31,7 +40,8 @@ export function usePublisher() {
       const finalPublisherOptions = Object.assign({}, publisherOptions, {
         width: '100%',
         height: '100%',
-        // publishAudio: false,
+        publishVideo: true,
+        publishAudio: true,
         style: {
           buttonDisplayMode: 'off',
           nameDisplayMode: 'on',
@@ -44,6 +54,7 @@ export function usePublisher() {
       console.log('usePublisher finalPublisherOptions', finalPublisherOptions);
       publisherRef.current = OT.initPublisher(
         containerId,
+        // 'screenContainer',
         finalPublisherOptions,
         (err) => {
           if (err) {
@@ -85,6 +96,7 @@ export function usePublisher() {
               setIsPublishing(false);
               reject(err);
             }
+
             console.log('Published');
             resolve(publisherRef.current);
           });

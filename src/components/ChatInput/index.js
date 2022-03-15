@@ -10,7 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 function ChatInput({ className, sendMessage }) {
   const CssTextField = styled(TextField)({
     '.MuiInputBase-input': {
-      color: 'white',
+      // color: 'white',
       fontSize: 16,
     },
   });

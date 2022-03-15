@@ -1,10 +1,66 @@
-import React, { useState, useRef, useCallback } from 'react';
-// import OT from '@opentok/client';
-const OT = window.OT;
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import OT from '@opentok/client';
+import LM from 'opentok-layout-js';
+import { isFunction } from 'lodash';
+import {
+  determinePreferredFrameRate,
+  determinePreferredResolution,
+} from '../utils';
+// import { useLayout } from '../hooks/useLayout';
+
+// const OT = window.OT;
 export function useSession({ container }) {
   const [connected, setConnected] = useState(false);
+  // const { layout } = useLayout();
   const [streams, setStreams] = useState([]);
+
   const sessionRef = useRef(null);
+  const layout = useRef(null);
+  // // let layout;
+
+  const resizeTimeout = useRef(null);
+
+  useEffect(() => {
+    if (container.current) {
+      const element = document.getElementById(container.current.id);
+      if (element) {
+        layout.current = LM(element, {
+          // fixedRatio: true,
+          // bigFirst: false,
+          bigFixedRatio: true,
+          maxRatio: 3 / 2,
+          minRatio: 9 / 16,
+          bigAlignItems: 'left',
+        });
+
+        layout.current.layout();
+
+        window.onresize = function () {
+          clearTimeout(resizeTimeout);
+          resizeTimeout.current = setTimeout(function () {
+            layout.current.layout();
+          }, 20);
+        };
+      }
+    }
+  }, [container]);
+
+  useEffect(() => {
+    if (streams.length > 0) {
+      const framerateToSet = determinePreferredFrameRate(streams.length);
+      const resolutionToSet = determinePreferredResolution(streams.length);
+      console.log(resolutionToSet);
+      console.log(framerateToSet);
+
+      streams.forEach((stream) => {
+        const subscribers = sessionRef.current.getSubscribersForStream(stream);
+        subscribers.forEach((subscriber) => {
+          subscriber.setPreferredFrameRate(framerateToSet);
+          subscriber.setPreferredResolution(resolutionToSet);
+        });
+      });
+    }
+  }, [streams]);
 
   const addStream = ({ stream }) => {
     setStreams((prev) => [...prev, stream]);
@@ -32,6 +88,7 @@ export function useSession({ container }) {
         });
         const subscriber = sessionRef.current.subscribe(
           stream,
+          // 'screenContainer',
           container.current.id,
           finalOptions
         );
@@ -44,12 +101,38 @@ export function useSession({ container }) {
     (event) => {
       subscribe(event.stream);
       addStream({ stream: event.stream });
+
+      if (event.stream.videoType === 'screen') {
+        const [subscriber] = sessionRef.current.getSubscribersForStream(
+          event.stream
+        );
+        const subscriberEl = document.getElementById(subscriber.id);
+        subscriberEl.classList.add('OT_big');
+      }
+
+      // const framerateToSet = determinePreferredFrameRate(streams.length);
+      console.log(event.stream);
+      if (layout) {
+        console.log(layout);
+        layout.current.layout();
+      }
     },
     [subscribe]
   );
 
   const onStreamDestroyed = useCallback((event) => {
+    console.log('destroyed');
+    // layout.layout();
     removeStream({ stream: event.stream });
+    sessionRef.current
+      .getSubscribersForStream(event.stream)
+      .forEach((subscriber) => {
+        subscriber.element.classList.remove('ot-layout');
+        setTimeout(() => {
+          subscriber.destroy();
+          layout.current.layout();
+        }, 200);
+      });
   }, []);
 
   const createSession = useCallback(
@@ -117,5 +200,6 @@ export function useSession({ container }) {
     createSession,
     destroySession,
     streams,
+    layout: layout.current,
   };
 }
