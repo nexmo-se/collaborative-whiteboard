@@ -1,3 +1,5 @@
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+
 const WhiteBoard = ({ url }) => {
   return (
     <iframe
@@ -5,6 +7,7 @@ const WhiteBoard = ({ url }) => {
       title="collaborative board"
       src={url}
       frameBorder="0"
+      // style={{ zoom: 0.75 }}
     ></iframe>
   );
 };

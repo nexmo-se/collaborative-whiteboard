@@ -14,12 +14,18 @@ export default makeStyles(
     root: {
       position: 'absolute',
       bottom: '5%',
-      left: '25%',
+      left: '10%',
       transform: 'translate(-50%, 0%)',
       padding: 16,
       borderRadius: 16,
       backgroundColor: 'rgba(20, 20, 20, .7)',
     },
+    controlSideBarClosed: {
+      left: '50%',
+    },
+    // chatOpened: {
+    //   left: '30%'
+    // }
   }),
   { index: 1 }
 );

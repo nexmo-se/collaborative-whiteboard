@@ -16,6 +16,8 @@ export default function VideoControl({
   currentSession,
   publisher,
   layout,
+  isSideNavOpened,
+  tabSelected,
 }) {
   const {
     publisher: screenPublisher,

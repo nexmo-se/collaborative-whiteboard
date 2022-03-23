@@ -26,6 +26,10 @@ function VideoHoverContainer({ children }) {
         className={clsx({
           [mStyles.root]: true,
           [mStyles.hidden]: !visible,
+          [mStyles.controlSideBarClosed]:
+            !children.props.isSideNavOpened ||
+            children.props.tabSelected === 'one',
+          // [mStyles.chatOpened]: children.props.tabSelected === 'one',
         })}
       >
         {children}

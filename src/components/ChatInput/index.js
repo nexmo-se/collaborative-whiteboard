@@ -37,7 +37,7 @@ function ChatInput({ className, sendMessage }) {
     <form className={className} onSubmit={handleClick}>
       <CssTextField
         autoFocus
-        style={{ width: '250px', marginLeft: '50px' }}
+        // style={{ width: '', }}
         // defaultValue="Normal"
         value={text}
         color="primary"

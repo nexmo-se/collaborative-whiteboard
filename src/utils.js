@@ -4,7 +4,7 @@ export function determinePreferredFrameRate(numberOfSubscribers) {
 }
 
 export function determinePreferredResolution(numberOfSubscribers) {
-  return numberOfSubscribers > 4
+  return numberOfSubscribers >= 4
     ? { width: 320, height: 240 }
     : { width: 640, height: 360 };
 }

@@ -45,6 +45,22 @@ export function useSession({ container }) {
     }
   }, [container]);
 
+  // useEffect(() => {
+  //   streams.forEach((stream) => {
+  //     const subscribers = sessionRef.current.getSubscribersForStream(stream);
+  //     console.log(stream.id);
+  //     subscribers.forEach((subscriber) => {
+  //       console.log('height: ' + subscriber.element.offsetHeight);
+  //       console.log('width: ' + subscriber.element.offsetWidth);
+
+  //       subscriber.setPreferredResolution({
+  //         width: subscriber.element.offsetWidth,
+  //         height: subscriber.element.offsetHeight,
+  //       });
+  //     });
+  //   });
+  // }, [layout, streams]);
+
   useEffect(() => {
     if (streams.length > 0) {
       const framerateToSet = determinePreferredFrameRate(streams.length);
