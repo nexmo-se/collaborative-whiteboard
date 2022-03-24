@@ -1,26 +1,25 @@
-// import styles from './styles.js';
 import React from 'react';
 
-import { useEffect, useRef, useState, useCallback, useContext } from 'react';
+import { useEffect } from 'react';
 import clsx from 'clsx';
 
-// import { getCredentials } from '../../api/fetchCreds';
-// import { PreferencesContext } from '../../context/PreferencesContext';
-// import { useSignalling } from '../../hooks/useSignalling';
-import { apiKey, token, sessionId } from '../../config';
 import TabContent from '../TabContent';
 
-function SideNav({ layout, handleChangeTab, tabOpened, isSideNavOpened }) {
+function SideNav({
+  layout,
+  handleChangeTab,
+  tabOpened,
+  isSideNavOpened,
+  sendChatMessage,
+  messages,
+}) {
   const changeTab = (tab, event) => {
-    console.log(event);
     handleChangeTab(tab);
   };
 
   useEffect(() => {
     if (layout) layout.layout();
   }, [layout, tabOpened, isSideNavOpened]);
-
-  //   const { preferences } = useContext(PreferencesContext);
 
   return (
     <div className="Vlt-tabs list">
@@ -36,17 +35,12 @@ function SideNav({ layout, handleChangeTab, tabOpened, isSideNavOpened }) {
             'Vlt-tabs__link': true,
             'Vlt-tabs__link_active': tabOpened === 'one',
           })}
+          onClick={(event) => {
+            changeTab('one');
+            layout.layout();
+          }}
         >
-          {/* <span>Chat</span> */}
-          <span
-            onClick={(event) => {
-              changeTab('one');
-              layout.layout();
-            }}
-            // onClick={handleChangeTab('one')}
-          >
-            Chat
-          </span>
+          <span>Chat</span>
         </li>
         <li
           role="tab"
@@ -58,19 +52,12 @@ function SideNav({ layout, handleChangeTab, tabOpened, isSideNavOpened }) {
             'Vlt-tabs__link': true,
             'Vlt-tabs__link_active': tabOpened === 'two',
           })}
+          onClick={() => {
+            changeTab('two');
+            layout.layout();
+          }}
         >
-          <span
-            // onClick={() => {
-            //   setTabSelected('two');
-            //   layout.layout();
-            // }}
-            onClick={() => {
-              changeTab('two');
-              layout.layout();
-            }}
-          >
-            Whiteboard
-          </span>
+          <span>Whiteboard</span>
         </li>
         <li
           role="tab"
@@ -82,16 +69,12 @@ function SideNav({ layout, handleChangeTab, tabOpened, isSideNavOpened }) {
             'Vlt-tabs__link': true,
             'Vlt-tabs__link_active': tabOpened === 'three',
           })}
+          onClick={() => {
+            changeTab('three');
+            layout.layout();
+          }}
         >
-          <span
-            onClick={() => {
-              changeTab('three');
-              layout.layout();
-            }}
-            // onClick={handleChangeTab('three')}
-          >
-            Doc editing
-          </span>
+          <span>Doc editing</span>
         </li>
       </ul>
       <div class="Vlt-tabs__content">
@@ -120,7 +103,11 @@ function SideNav({ layout, handleChangeTab, tabOpened, isSideNavOpened }) {
           class="Vlt-tabs__panel"
         ></div>
       </div>
-      <TabContent tabSelected={tabOpened} />
+      <TabContent
+        sendChatMessage={sendChatMessage}
+        tabSelected={tabOpened}
+        messages={messages}
+      />
     </div>
   );
 }

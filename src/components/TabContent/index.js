@@ -8,14 +8,14 @@ import { useSession } from '../../hooks/useSession';
 import Chat from '../Chat';
 import { useChat } from '../../hooks/useChat';
 
-function TabContent({ tabSelected, session }) {
-  const { messages, sendMessage } = useChat({
-    session: session,
-  });
+function TabContent({ tabSelected, sendChatMessage, messages }) {
+  //   const { messages, sendMessage } = useChat({
+  //     session: session,
+  //   });
 
-  const sendChatMessage = (message) => {
-    sendMessage({ message });
-  };
+  //   const sendChatMessage = (message) => {
+  //     sendMessage({ message });
+  //   };
   return (
     <div className="participants">
       {tabSelected === 'one' && (
