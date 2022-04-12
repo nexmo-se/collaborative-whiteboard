@@ -1,22 +1,26 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import OT from '@opentok/client';
 import LM from 'opentok-layout-js';
-import { isFunction } from 'lodash';
 import {
   determinePreferredFrameRate,
   determinePreferredResolution,
 } from '../utils';
-// import { useLayout } from '../hooks/useLayout';
+import { useResizeObserver } from './useResizeObserver';
 
 // const OT = window.OT;
 export function useSession({ container }) {
   const [connected, setConnected] = useState(false);
   // const { layout } = useLayout();
   const [streams, setStreams] = useState([]);
+  const [subscribers, setSubscribers] = useState([]);
 
   const sessionRef = useRef(null);
   const layout = useRef(null);
   // // let layout;
+
+  const resizeObserver = useRef(null);
+  const width = useRef(null);
+  const height = useRef(null);
 
   const resizeTimeout = useRef(null);
 
@@ -45,21 +49,36 @@ export function useSession({ container }) {
     }
   }, [container]);
 
-  // useEffect(() => {
-  //   streams.forEach((stream) => {
-  //     const subscribers = sessionRef.current.getSubscribersForStream(stream);
-  //     console.log(stream.id);
-  //     subscribers.forEach((subscriber) => {
-  //       console.log('height: ' + subscriber.element.offsetHeight);
-  //       console.log('width: ' + subscriber.element.offsetWidth);
+  const createResizeObserver = (subscriber) => {
+    console.log('creating observer');
+    const resizeObserver = new ResizeObserver(function (entries) {
+      // since we are observing only a single element, so we access the first element in entries array
+      let rect = entries[0].contentRect;
 
-  //       subscriber.setPreferredResolution({
-  //         width: subscriber.element.offsetWidth,
-  //         height: subscriber.element.offsetHeight,
-  //       });
-  //     });
-  //   });
-  // }, [layout, streams]);
+      console.log('Current Width : ' + rect.width);
+      console.log('Current Height : ' + rect.height);
+      subscriber.setPreferredResolution({
+        width: rect.width,
+        height: rect.height,
+      });
+
+      // current width & height
+      // width.current = rect.width;
+      // height.current = rect.height;
+    });
+    return resizeObserver;
+  };
+
+  useEffect(() => {
+    subscribers.forEach((subscriber) => {
+      const resize = createResizeObserver(subscriber);
+      resize.observe(document.getElementById(subscriber.id));
+    });
+
+    // return () => {
+    //   resize.unobserve()
+    // };
+  }, [subscribers]);
 
   useEffect(() => {
     if (streams.length > 0) {
@@ -82,32 +101,60 @@ export function useSession({ container }) {
     setStreams((prev) => [...prev, stream]);
   };
 
+  const addSubscribers = ({ subscriber }) => {
+    setSubscribers((prev) => [...prev, subscriber]);
+  };
+
+  const removeSubscribers = ({ subscriber }) => {
+    setSubscribers((prev) =>
+      prev.filter((prevSub) => prevSub.id !== subscriber.id)
+    );
+  };
+
   const removeStream = ({ stream }) => {
-    setStreams((prev) =>
+    setSubscribers((prev) =>
       prev.filter((prevStream) => prevStream.id !== stream.id)
     );
   };
 
   const subscribe = React.useCallback(
     (stream, options = {}) => {
+      var el = document.createElement('div');
+      el.style.zIndex = 100;
       if (sessionRef.current && container.current) {
-        const finalOptions = Object.assign({}, options, {
-          insertMode: 'append',
-          width: '100%',
-          height: '100%',
-          fitMode: 'contain',
-          style: {
-            buttonDisplayMode: 'off',
-            nameDisplayMode: 'on',
-          },
-          showControls: false,
-        });
+        // const finalOptions = Object.assign({}, options, {
+        //   insertMode: 'append',
+        //   width: '100%',
+        //   height: '100%',
+        //   fitMode: 'contain',
+        //   style: {
+        //     buttonDisplayMode: 'off',
+        //     nameDisplayMode: 'on',
+        //   },
+        //   showControls: false,
+        // });
         const subscriber = sessionRef.current.subscribe(
           stream,
+          el
           // 'screenContainer',
-          container.current.id,
-          finalOptions
+          // container.current.id,
+          // finalOptions
         );
+        el.addEventListener('dblclick', function () {
+          if (el.classList.contains('OT_big')) {
+            el.classList.remove('OT_big');
+          } else {
+            el.classList.add('OT_big');
+          }
+          layout.current.layout();
+        });
+        // layoutEl.appendChild(el);
+        const element = document.getElementById(container.current.id);
+        element.appendChild(el);
+        layout.current.layout();
+        // layout();
+        addSubscribers({ subscriber });
+        // createResizeObserver(subscriber);
       }
     },
     [container]
@@ -137,14 +184,18 @@ export function useSession({ container }) {
   );
 
   const onStreamDestroyed = useCallback((event) => {
+    event.preventDefault();
     console.log('destroyed');
+
     // layout.layout();
     removeStream({ stream: event.stream });
     sessionRef.current
       .getSubscribersForStream(event.stream)
       .forEach((subscriber) => {
+        removeSubscribers({ subscriber });
         subscriber.element.classList.remove('ot-layout');
         setTimeout(() => {
+          // removeSubscribers({ subscriber });
           subscriber.destroy();
           layout.current.layout();
         }, 200);

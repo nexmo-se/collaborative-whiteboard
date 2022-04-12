@@ -34,7 +34,7 @@ function VirtualView() {
     container: videoContainer,
   });
 
-  const [tabOpened, setTabOpened] = useState('one');
+  const [tabOpened, setTabOpened] = useState('three');
 
   const [isSideNavOpened, setSideNavOpened] = useState(true);
   const handleSideNavToggle = (isopen) => {

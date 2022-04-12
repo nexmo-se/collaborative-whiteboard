@@ -18,7 +18,6 @@ import { useSession } from '../../hooks/useSession';
 
 import { useChat } from '../../hooks/useChat';
 import { useState } from 'react';
-import TabContent from '../TabContent';
 import SideBarToggler from '../SideBarToggler';
 
 function Main() {
