@@ -5,7 +5,6 @@ import {
   determinePreferredFrameRate,
   determinePreferredResolution,
 } from '../utils';
-import { useResizeObserver } from './useResizeObserver';
 
 // const OT = window.OT;
 export function useSession({ container }) {

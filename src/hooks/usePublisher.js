@@ -41,7 +41,7 @@ export function usePublisher() {
         width: '100%',
         height: '100%',
         publishVideo: true,
-        publishAudio: true,
+        // publishAudio: false,
         style: {
           buttonDisplayMode: 'off',
           nameDisplayMode: 'on',
