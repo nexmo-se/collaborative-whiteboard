@@ -11,3 +11,9 @@ So that users can collaborate on the project, they need to be part of the same I
 1. Populate the `config.js` file with some test credentials
 2. Run `npm install`
 3. Run `npm start`
+
+## Sample screenshots
+
+![Whiteboard](https://github.com/nexmo-se/collaborative-whiteboard/blob/main/public/docedit.png?raw=true)
+
+![Document editing](https://github.com/nexmo-se/collaborative-whiteboard/blob/main/public/whiteboard.png?raw=true)
