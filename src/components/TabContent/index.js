@@ -24,14 +24,14 @@ function TabContent({ tabSelected, sendChatMessage, messages }) {
       {tabSelected === 'two' && (
         <Whiteboard
           url={
-            'https://javier58203.invisionapp.com/freehand/Untitled-apqnRCKm?dsid_h=0213b0c0cdc67400c8a3825354a697fbac48c9b6cd66b4ef87b9b1dfc8f867ca&uid_h=44ecf9d34e8dbe8592babb44605e879ca1ff432743d90c69258b705106c87d89'
+            'https://javier58203.invisionapp.com/freehand/Untitled-iQnq4UyY0?dsid_h=2ed0a5efcdb26f5474296992357da9f15f2c0046fb965b88dd7815bd6e6a2f9a&uid_h=44ecf9d34e8dbe8592babb44605e879ca1ff432743d90c69258b705106c87d89'
           }
         />
       )}
       {tabSelected === 'three' && (
         <Whiteboard
           url={
-            'https://javier58203.invisionapp.com/freehand/Untitled-BRi5YW8yS?dsid_h=d5d6d9b8b27fa4534aef798cb3a8fe9e52295e05adb1818820d9dc9310a6bdc2&uid_h=44ecf9d34e8dbe8592babb44605e879ca1ff432743d90c69258b705106c87d89'
+            'https://javier58203.invisionapp.com/freehand/Firstone-vt0ufPx0X?dsid_h=7cb4732fc83fda999c25095989d0f5d293c6be134ec7b4b5aaf30188dc62674d&uid_h=44ecf9d34e8dbe8592babb44605e879ca1ff432743d90c69258b705106c87d89'
           }
         />
       )}
